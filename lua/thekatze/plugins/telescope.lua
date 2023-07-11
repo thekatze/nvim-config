@@ -5,6 +5,12 @@ return {
         "nvim-telescope/telescope.nvim",
         tag = "0.1.2",
         dependencies = { "nvim-lua/plenary.nvim" },
+        opts = {
+            defaults = {
+                prompt_prefix = "( 👁️ ᴗ 👁️ ) ",
+                selection_caret = "ඞ ",
+            },
+        },
         init = function()
             local builtin = require("telescope.builtin")
 

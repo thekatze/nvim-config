@@ -27,7 +27,10 @@ return {
             },
             c = {
                 name = "Configure",
-            }
+            },
+            d = {
+                name = "Debug",
+            },
         }
 
         whichkey.register(mappings, opts)

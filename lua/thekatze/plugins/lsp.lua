@@ -11,10 +11,13 @@ return {
             end,
         },
         { "williamboman/mason-lspconfig.nvim" },
+        { "folke/neodev.nvim",                opts = {} },     -- configure lua lsp for neovim config
 
         -- Autocompletion
         { "hrsh7th/nvim-cmp" },
         { "hrsh7th/cmp-nvim-lsp" },
+        { "hrsh7th/cmp-buffer" },
+        { "hrsh7th/cmp-path" },
         { "L3MON4D3/LuaSnip" },
     },
     init = function()
@@ -29,8 +32,10 @@ return {
             vim.keymap.set("n", "gs", vim.diagnostic.open_float, { desc = "Show line diagnostics", buffer = bufnr })
             vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Show lsp info", buffer = bufnr })
 
-            vim.keymap.set("n", "<leader>ls", builtin.lsp_document_symbols, { desc = "Document Symbols", buffer = bufnr })
-            vim.keymap.set("n", "<leader>lS", builtin.lsp_workspace_symbols, { desc = "Workspace Symbols", buffer = bufnr })
+            vim.keymap.set("n", "<leader>ls", builtin.lsp_document_symbols,
+                { desc = "Document Symbols", buffer = bufnr })
+            vim.keymap.set("n", "<leader>lS", builtin.lsp_workspace_symbols,
+                { desc = "Workspace Symbols", buffer = bufnr })
             vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, { desc = "Rename", buffer = bufnr })
             vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { desc = "Format", buffer = bufnr })
             vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code action", buffer = bufnr })
@@ -46,6 +51,13 @@ return {
         local cmp_select_opts = { behavior = cmp.SelectBehavior.Select }
 
         cmp.setup({
+            sources = cmp.config.sources({
+                { name = "nvim_lsp" },
+                { name = "luasnip" },
+            }, {
+                { name = "buffer" },
+                { name = "path" },
+            }),
             mapping = {
                 ["<Tab>"] = cmp.mapping.confirm({ select = true }),
                 ["<C-Space>"] = cmp.mapping.complete(),
