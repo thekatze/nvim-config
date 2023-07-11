@@ -1,8 +1,9 @@
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>e", vim.cmd.Ex, { desc = "Explore" })
 
--- FAST CONFIG
-vim.keymap.set("n", "<leader>c", "<cmd>tabnew ~/.config/nvim/lua/thekatze/init.lua<CR>", { desc = "Configure" })
+-- open all kinds of config
+vim.keymap.set("n", "<leader>cc", "<cmd>tabnew ~/.config/nvim/lua/thekatze/init.lua<CR>", { desc = "Neovim" })
+vim.keymap.set("n", "<leader>cm", "<cmd>Mason<CR>", { desc = "Mason (LSP servers)" })
 
 -- fuck the arrow keys
 vim.keymap.set({ "n", "v", "i" }, "<Up>", "")
@@ -26,14 +27,14 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("x", "<leader>p", "\"_dp", { desc = "Paste w/o register" })
 
 -- leader y for yanking into system clipboard
-vim.keymap.set("n", "<leader>y", "\"+y", { desc = "Copy into system clipboard" })
-vim.keymap.set("n", "<leader>Y", "\"+Y", { desc = "Copy into system clipboard" })
-vim.keymap.set("v", "<leader>y", "\"+y", { desc = "Copy into system clipboard" })
+vim.keymap.set("n", "<leader>y", "\"+y", { desc = "Yank into system clipboard" })
+vim.keymap.set("n", "<leader>Y", "\"+Y", { desc = "Yank into system clipboard" })
+vim.keymap.set("v", "<leader>y", "\"+y", { desc = "Yank into system clipboard" })
 
 -- keep selection on indent
 vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")
 
 -- quickfix navigation
-vim.keymap.set("n", "<C-k>", "<cmd>cprev<CR>zz")
-vim.keymap.set("n", "<C-j>", "<cmd>cnext<CR>zz")
+vim.keymap.set("n", "<C-p>", "<cmd>cprev<CR>zz")
+vim.keymap.set("n", "<C-n>", "<cmd>cnext<CR>zz")

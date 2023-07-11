@@ -21,9 +21,19 @@ return {
         local lsp = require("lsp-zero").preset({})
 
         lsp.on_attach(function(client, bufnr)
-            -- TODO: add keymaps for stuff like formatting
-            -- https://github.com/VonHeikemen/lsp-zero.nvim/blob/v2.x/doc/md/lsp.md#introduction
-            lsp.default_keymaps({ buffer = bufnr })
+            local builtin = require("telescope.builtin")
+
+            vim.keymap.set("n", "gd", builtin.lsp_definitions, { desc = "Go to definition", buffer = bufnr })
+            vim.keymap.set("n", "gI", builtin.lsp_implementations, { desc = "Go to implementations", buffer = bufnr })
+            vim.keymap.set("n", "gs", builtin.lsp_document_symbols, { desc = "Document Symbols", buffer = bufnr })
+            vim.keymap.set("n", "gr", builtin.lsp_references, { desc = "Go to references", buffer = bufnr })
+
+            vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Show lsp info", buffer = bufnr })
+            vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, { desc = "Rename", buffer = bufnr })
+            vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { desc = "Format", buffer = bufnr })
+            vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code action", buffer = bufnr })
+
+            vim.keymap.set("n", "<leader>ld", builtin.diagnostics, { desc = "Diagnostics", buffer = bufnr })
         end)
 
         require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
@@ -37,14 +47,14 @@ return {
             mapping = {
                 ["<Tab>"] = cmp.mapping.confirm({ select = true }),
                 ["<C-Space>"] = cmp.mapping.complete(),
-                ["<C-j>"] = cmp.mapping(function()
+                ["<C-n>"] = cmp.mapping(function()
                     if cmp.visible() then
                         cmp.select_next_item(cmp_select_opts)
                     else
                         cmp.complete()
                     end
                 end),
-                ["<C-k>"] = cmp.mapping(function()
+                ["<C-p>"] = cmp.mapping(function()
                     if cmp.visible() then
                         cmp.select_prev_item(cmp_select_opts)
                     else

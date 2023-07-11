@@ -16,13 +16,17 @@ return {
         }
 
         local mappings = {
-            b = {
-                name = "Buffer",
-                c = { "<Cmd>bd!<Cr>", "Close current buffer" },
-                D = { "<Cmd>%bd|e#|bd#<Cr>", "Delete all buffers" },
+            l = {
+                name = "LSP",
             },
             s = {
                 name = "Search",
+            },
+            z = {
+                name = "Zen",
+            },
+            c = {
+                name = "Configure",
             }
         }
 

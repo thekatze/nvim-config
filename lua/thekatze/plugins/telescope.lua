@@ -1,3 +1,5 @@
+local handle_error = require("thekatze.util").handle_error
+
 return {
     {
         "nvim-telescope/telescope.nvim",
@@ -6,12 +8,8 @@ return {
         init = function()
             local builtin = require("telescope.builtin")
 
-            vim.keymap.set("n", "<leader>f", function()
-                local ok = pcall(builtin.git_files)
-                if not ok then
-                    print("Not a git repository")
-                end
-            end, { desc = "Open git file" })
+            vim.keymap.set("n", "<leader>f", handle_error(builtin.git_files, "Not a git repository"),
+                { desc = "Open git file" })
             vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "File" })
             vim.keymap.set("n", "<leader>st", builtin.live_grep, { desc = "Text" })
             vim.keymap.set("n", "<leader>sb", builtin.buffers, { desc = "Buffer" })
