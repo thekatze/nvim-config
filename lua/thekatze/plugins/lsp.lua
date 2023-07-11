@@ -25,10 +25,12 @@ return {
 
             vim.keymap.set("n", "gd", builtin.lsp_definitions, { desc = "Go to definition", buffer = bufnr })
             vim.keymap.set("n", "gI", builtin.lsp_implementations, { desc = "Go to implementations", buffer = bufnr })
-            vim.keymap.set("n", "gs", builtin.lsp_document_symbols, { desc = "Document Symbols", buffer = bufnr })
             vim.keymap.set("n", "gr", builtin.lsp_references, { desc = "Go to references", buffer = bufnr })
-
+            vim.keymap.set("n", "gs", vim.diagnostic.open_float, { desc = "Show line diagnostics", buffer = bufnr })
             vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Show lsp info", buffer = bufnr })
+
+            vim.keymap.set("n", "<leader>ls", builtin.lsp_document_symbols, { desc = "Document Symbols", buffer = bufnr })
+            vim.keymap.set("n", "<leader>lS", builtin.lsp_workspace_symbols, { desc = "Workspace Symbols", buffer = bufnr })
             vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, { desc = "Rename", buffer = bufnr })
             vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { desc = "Format", buffer = bufnr })
             vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code action", buffer = bufnr })
