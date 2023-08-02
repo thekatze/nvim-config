@@ -4,15 +4,30 @@ return {
     {
         "nvim-telescope/telescope.nvim",
         tag = "0.1.2",
-        dependencies = { "nvim-lua/plenary.nvim" },
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            {
+                "nvim-telescope/telescope-fzf-native.nvim",
+                build =
+                "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build"
+            }
+        },
         opts = {
             defaults = {
                 prompt_prefix = "( 👁️ ᴗ 👁️ ) ",
                 selection_caret = "ඞ ",
             },
+            fzf = {
+                fuzzy = true,
+                override_generic_sorter = true,
+                override_file_sorter = true,
+            },
         },
         init = function()
+            require('telescope').load_extension('fzf')
             local builtin = require("telescope.builtin")
+
+            vim.keymap.set("n", "<C-f>", builtin.current_buffer_fuzzy_find, { desc = "Find in file" })
 
             vim.keymap.set("n", "<leader>f", handle_error(builtin.git_files, "Not a git repository"),
                 { desc = "Open git file" })
@@ -25,9 +40,4 @@ return {
             vim.keymap.set("n", "<leader>ss", builtin.treesitter, { desc = "LSP Symbols" })
         end
     },
-    {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        build =
-        "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build"
-    }
 }

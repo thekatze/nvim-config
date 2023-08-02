@@ -10,6 +10,7 @@ return {
                 hidden = true,
                 direction = "float",
                 dir = "git_dir",
+                autochdir = true,
                 -- function to run on opening the terminal
                 on_open = function(term)
                     vim.cmd("startinsert!")

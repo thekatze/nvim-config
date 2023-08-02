@@ -11,7 +11,10 @@ return {
             end,
         },
         { "williamboman/mason-lspconfig.nvim" },
-        { "folke/neodev.nvim",                opts = {} },     -- configure lua lsp for neovim config
+        {
+            "folke/neodev.nvim",
+            opts = {}
+        }, -- configure lua lsp for neovim config
 
         -- Autocompletion
         { "hrsh7th/nvim-cmp" },
@@ -19,6 +22,13 @@ return {
         { "hrsh7th/cmp-buffer" },
         { "hrsh7th/cmp-path" },
         { "L3MON4D3/LuaSnip" },
+        { "rafamadriz/friendly-snippets" },
+        {
+            'j-hui/fidget.nvim',
+            tag = 'legacy',
+            opts = {},
+            event = "LspAttach",
+        },
     },
     init = function()
         local lsp = require("lsp-zero").preset({})
