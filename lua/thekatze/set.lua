@@ -14,8 +14,6 @@ end
 
 vim.opt.autochdir = true
 
-vim.opt.guicursor = "n-v-c-sm-i-ci-ve:block,r-cr-o:hor20"
-
 vim.opt.mouse = nil
 
 vim.opt.number = true
