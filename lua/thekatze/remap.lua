@@ -3,6 +3,7 @@ vim.keymap.set("n", "<leader>e", vim.cmd.Ex, { desc = "Explore" })
 
 -- open all kinds of config
 vim.keymap.set("n", "<leader>cc", "<cmd>tabnew ~/.config/nvim/lua/thekatze/init.lua<CR>", { desc = "Neovim" })
+vim.keymap.set("n", "<leader>cl", "<cmd>Lazy<CR>", { desc = "Lazy (Plugins)" })
 vim.keymap.set("n", "<leader>cm", "<cmd>Mason<CR>", { desc = "Mason (LSP servers)" })
 
 -- fuck the arrow keys

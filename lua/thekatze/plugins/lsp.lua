@@ -1,6 +1,7 @@
 return {
     "VonHeikemen/lsp-zero.nvim",
     branch = "v2.x",
+    event = "VeryLazy",
     dependencies = {
         -- LSP Support
         { "neovim/nvim-lspconfig" },
@@ -26,7 +27,11 @@ return {
         {
             'j-hui/fidget.nvim',
             tag = 'legacy',
-            opts = {},
+            opts = {
+                text = {
+                    spinner = "arc",
+                }
+            },
             event = "LspAttach",
         },
     },
