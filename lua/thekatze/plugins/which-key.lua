@@ -16,6 +16,9 @@ return {
         }
 
         local mappings = {
+            L = {
+                name = "LeetCode",
+            },
             l = {
                 name = "LSP",
             },

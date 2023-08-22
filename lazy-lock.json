@@ -1,4 +1,5 @@
 {
+  "LeetBuddy.nvim": { "branch": "main", "commit": "bd4929d1dbb0815f53ed2cf51cf46fe7cab0571a" },
   "LuaSnip": { "branch": "master", "commit": "409535b8fc54c650eb845b0c35e0cc7f08810284" },
   "autoclose.nvim": { "branch": "main", "commit": "d8bebaaf8c48bd0cd0645d20592548eab279fea3" },
   "cellular-automaton.nvim": { "branch": "main", "commit": "679943b8e1e5ef79aaeeaf4b00782c52eb4e928f" },
