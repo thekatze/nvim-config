@@ -28,9 +28,8 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("x", "<leader>p", "\"_dp", { desc = "Paste w/o register" })
 
 -- leader y for yanking into system clipboard
-vim.keymap.set("n", "<leader>y", "\"+y", { desc = "Yank into system clipboard" })
+vim.keymap.set({ "n", "v" }, "<leader>y", "\"+y", { desc = "Yank into system clipboard" })
 vim.keymap.set("n", "<leader>Y", "\"+Y", { desc = "Yank into system clipboard" })
-vim.keymap.set("v", "<leader>y", "\"+y", { desc = "Yank into system clipboard" })
 
 -- keep selection on indent
 vim.keymap.set("v", "<", "<gv")
