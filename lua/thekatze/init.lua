@@ -14,4 +14,10 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup("thekatze.plugins")
+require("lazy").setup("thekatze.plugins", {
+    dev = {
+        path = "~/Development/nvim-plugins",
+        patterns = { "thekatze" },
+        fallback = false, -- Fallback to git when local plugin doesn't exist
+    },
+})

@@ -1,6 +1,5 @@
 if vim.g.neovide then
     vim.o.guifont = "JetBrainsMono Nerd Font"
-    vim.opt.mouse = ""
 
     -- Helper function for transparency formatting
     local alpha = function()
