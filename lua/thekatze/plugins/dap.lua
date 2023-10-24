@@ -103,18 +103,15 @@ return {
             }
         })
 
-        dap.listeners.after.event_initialized["launch-dap-ui"] = function(session, err, body, request, seq)
-            print("INITIALIZED")
+        dap.listeners.after.event_initialized["launch-dap-ui"] = function()
             dapui.open();
         end
 
-        dap.listeners.after.event_exited["launch-dap-ui"] = function(session, err, body, request, seq)
-            print("exited")
+        dap.listeners.after.event_exited["launch-dap-ui"] = function()
             dapui.close();
         end
 
-        dap.listeners.after.event_terminated["launch-dap-ui"] = function(session, err, body, request, seq)
-            print("terminated")
+        dap.listeners.after.event_terminated["launch-dap-ui"] = function()
             dapui.close();
         end
 

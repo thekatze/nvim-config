@@ -1,11 +1,13 @@
 return {
     -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
+    main = "ibl",
     opts = {
-        -- char = '│',
-        -- char = '╎',
-        -- char = '┆',
-        char = '┊',
-        show_trailing_blankline_indent = false,
+        indent = {
+            -- char = '│',
+            -- char = '╎',
+            -- char = '┆',
+            char = '┊',
+        }
     },
 }

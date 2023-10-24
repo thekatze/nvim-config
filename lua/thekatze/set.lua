@@ -11,8 +11,6 @@ if vim.g.neovide then
     vim.g.neovide_background_color = "#0f1117" .. alpha()
 end
 
-vim.opt.autochdir = true
-
 vim.opt.mouse = nil
 
 vim.opt.number = true
