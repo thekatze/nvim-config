@@ -1,5 +1,6 @@
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>e", vim.cmd.Ex, { desc = "Explore" })
+vim.keymap.set("n", "<leader>w", vim.cmd.w, { desc = "Save" })
 
 -- open all kinds of config
 vim.keymap.set("n", "<leader>cc", "<cmd>tabnew ~/.config/nvim/lua/thekatze/init.lua<CR>", { desc = "Neovim" })
