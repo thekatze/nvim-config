@@ -58,23 +58,36 @@ return {
             vim.keymap.set("n", "<leader>ld", builtin.diagnostics, { desc = "Diagnostics", buffer = bufnr })
         end)
 
-        require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
+        local lspconfig = require("lspconfig")
+
+        lspconfig.lua_ls.setup(lsp.nvim_lua_ls())
 
         lsp.setup()
+
+        lspconfig.rust_analyzer.setup {
+            -- Server-specific settings. See `:help lspconfig-setup`
+            settings = {
+                ['rust-analyzer'] = {
+                    checkOnSave = {
+                        command = "clippy"
+                    },
+                },
+            },
+        }
 
         local cmp = require("cmp")
         local cmp_select_opts = { behavior = cmp.SelectBehavior.Select }
 
         cmp.setup({
-            sources = cmp.config.sources({
-                { name = "copilot" },
-            }, {
-                { name = "nvim_lsp" },
-                { name = "luasnip" },
-            }, {
-                { name = "buffer" },
-                { name = "path" },
-            }),
+            sources = cmp.config.sources(
+                {
+                    { name = "copilot" },
+                    { name = "nvim_lsp" },
+                    { name = "luasnip" },
+                }, {
+                    { name = "buffer" },
+                    { name = "path" },
+                }),
             mapping = {
                 ["<Tab>"] = cmp.mapping.confirm({ select = true }),
                 ["<C-Space>"] = cmp.mapping.complete(),
