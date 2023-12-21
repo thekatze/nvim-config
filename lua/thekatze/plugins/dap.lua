@@ -117,7 +117,7 @@ return {
 
         dap.adapters.coreclr = {
             type = 'executable',
-            command = '/usr/local/netcoredbg',
+            command = 'netcoredbg',
             args = { '--interpreter=vscode' }
         }
 
@@ -136,7 +136,7 @@ return {
             type = "server",
             port = "${port}",
             executable = {
-                command = "/usr/local/codelldb/adapter/codelldb",
+                command = "codelldb",
                 args = { "--port", "${port}" }
             }
         }
