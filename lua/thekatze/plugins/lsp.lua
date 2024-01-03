@@ -84,9 +84,8 @@ return {
                     { name = "copilot" },
                     { name = "nvim_lsp" },
                     { name = "luasnip" },
-                }, {
-                    { name = "buffer" },
                     { name = "path" },
+                    { name = "buffer" },
                 }),
             mapping = {
                 ["<Tab>"] = cmp.mapping.confirm({ select = true }),
