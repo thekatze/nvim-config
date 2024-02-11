@@ -88,7 +88,7 @@ return {
                     { name = "buffer" },
                 }),
             mapping = {
-                ["<Tab>"] = cmp.mapping.confirm({ select = true }),
+                ["<C-h>"] = cmp.mapping.confirm({ select = true }),
                 ["<C-Space>"] = cmp.mapping.complete(),
                 ["<C-n>"] = cmp.mapping(function()
                     if cmp.visible() then
