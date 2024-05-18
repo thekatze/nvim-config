@@ -1,6 +1,6 @@
 return {
     "VonHeikemen/lsp-zero.nvim",
-    branch = "v2.x",
+    branch = "v3.x",
     event = "VeryLazy",
     dependencies = {
         -- LSP Support
@@ -26,10 +26,14 @@ return {
         { "rafamadriz/friendly-snippets" },
         {
             'j-hui/fidget.nvim',
-            tag = 'legacy',
+            tag = 'v1.4.1',
             opts = {
-                text = {
-                    spinner = "arc",
+                progress = {
+                    display = {
+                        progress_icon = {
+                            pattern = "arc",
+                        }
+                    }
                 }
             },
             event = "LspAttach",
@@ -39,26 +43,42 @@ return {
         local lsp = require("lsp-zero").preset({})
 
         lsp.on_attach(function(client, bufnr)
-            local builtin = require("telescope.builtin")
+            local telescope = require("telescope.builtin")
 
-            vim.keymap.set("n", "gd", builtin.lsp_definitions, { desc = "Go to definition", buffer = bufnr })
-            vim.keymap.set("n", "gI", builtin.lsp_implementations, { desc = "Go to implementations", buffer = bufnr })
-            vim.keymap.set("n", "gr", builtin.lsp_references, { desc = "Go to references", buffer = bufnr })
+            -- TODO: definitions are currently broken in telescope, go back to telescope.lsp_definitions once fixed
+            vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition", buffer = bufnr })
+            vim.keymap.set("n", "gI", telescope.lsp_implementations, { desc = "Go to implementations", buffer = bufnr })
+            vim.keymap.set("n", "gr", telescope.lsp_references, { desc = "Go to references", buffer = bufnr })
             vim.keymap.set("n", "gs", vim.diagnostic.open_float, { desc = "Show line diagnostics", buffer = bufnr })
             vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Show lsp info", buffer = bufnr })
 
-            vim.keymap.set("n", "<leader>ls", builtin.lsp_document_symbols,
+            vim.keymap.set("n", "<leader>li", function()
+                vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+            end, { desc = "Toggle Inlay Hints", buffer = bufnr })
+
+            vim.keymap.set("n", "<leader>ls", telescope.lsp_document_symbols,
                 { desc = "Document Symbols", buffer = bufnr })
-            vim.keymap.set("n", "<leader>lS", builtin.lsp_workspace_symbols,
+            vim.keymap.set("n", "<leader>lS", telescope.lsp_workspace_symbols,
                 { desc = "Workspace Symbols", buffer = bufnr })
             vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, { desc = "Rename", buffer = bufnr })
             vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { desc = "Format", buffer = bufnr })
             vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code action", buffer = bufnr })
 
-            vim.keymap.set("n", "<leader>ld", builtin.diagnostics, { desc = "Diagnostics", buffer = bufnr })
+            vim.keymap.set("n", "<leader>ld", telescope.diagnostics, { desc = "Diagnostics", buffer = bufnr })
+            vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Next Diagnostic", buffer = bufnr })
+            vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Previous Diagnostic", buffer = bufnr })
         end)
 
         local lspconfig = require("lspconfig")
+
+        require("mason").setup({})
+        require("mason-lspconfig").setup({
+            handlers = {
+                function(server_name)
+                    lspconfig[server_name].setup({})
+                end
+            }
+        })
 
         lspconfig.lua_ls.setup(lsp.nvim_lua_ls())
 
@@ -79,6 +99,12 @@ return {
         local cmp_select_opts = { behavior = cmp.SelectBehavior.Select }
 
         cmp.setup({
+            formatting = lsp.cmp_format(),
+            snippet = {
+                expand = function(args)
+                    require('luasnip').lsp_expand(args.body)
+                end
+            },
             sources = cmp.config.sources(
                 {
                     { name = "copilot" },
@@ -89,7 +115,6 @@ return {
                 }),
             mapping = {
                 ["<C-h>"] = cmp.mapping.confirm({ select = true }),
-                ["<C-Space>"] = cmp.mapping.complete(),
                 ["<C-n>"] = cmp.mapping(function()
                     if cmp.visible() then
                         cmp.select_next_item(cmp_select_opts)

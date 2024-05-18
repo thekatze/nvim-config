@@ -1,6 +1,11 @@
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>e", vim.cmd.Ex, { desc = "Explore" })
+vim.keymap.set("n", "<leader>e", "<cmd>Oil<CR>", { desc = "Explore" })
 vim.keymap.set("n", "<leader>w", vim.cmd.w, { desc = "Save" })
+
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Focus left window" })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Focus right window" })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Focus top window" })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Focus bottom window" })
 
 -- open all kinds of config
 vim.keymap.set("n", "<leader>cc", "<cmd>tabnew ~/.config/nvim/lua/thekatze/init.lua<CR>", { desc = "Neovim" })

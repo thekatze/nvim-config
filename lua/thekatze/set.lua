@@ -11,7 +11,9 @@ if vim.g.neovide then
     vim.g.neovide_background_color = "#0f1117" .. alpha()
 end
 
-vim.opt.mouse = nil
+vim.opt.mouse = ""
+
+vim.g.have_nerd_font = true
 
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -32,12 +34,22 @@ vim.opt.undofile = true
 
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true -- case insensitive UNLESS capital letters are in search
+
+vim.opt.inccommand = "split"
+
+vim.opt.splitright = true
+vim.opt.splitbelow = true
 
 vim.opt.termguicolors = true
 
 vim.opt.scrolloff = 8
 
 vim.opt.updatetime = 500
+
+-- Don't have `o` add a comment
+vim.opt.formatoptions:remove "o"
 
 -- highlight on yank
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
@@ -58,3 +70,4 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
     end,
     group = wgsl_opened_group
 })
+
