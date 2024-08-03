@@ -54,7 +54,7 @@ return {
 
         dap.adapters.coreclr = {
             type = 'executable',
-            command = '/usr/local/netcoredbg',
+            command = 'netcoredbg',
             args = { '--interpreter=vscode' }
         }
 
@@ -92,6 +92,19 @@ return {
         }
 
         dap.configurations.cpp = {
+            {
+                name = "Launch file",
+                type = "codelldb",
+                request = "launch",
+                program = function()
+                    return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/build/', 'file')
+                end,
+                cwd = '${workspaceFolder}',
+                stopOnEntry = false,
+            }
+        }
+
+        dap.configurations.objc = {
             {
                 name = "Launch file",
                 type = "codelldb",

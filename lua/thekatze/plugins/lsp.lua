@@ -40,7 +40,7 @@ return {
         },
     },
     init = function()
-        local lsp = require("lsp-zero").preset({})
+        local lsp = require("lsp-zero")
 
         lsp.on_attach(function(client, bufnr)
             local telescope = require("telescope.builtin")

@@ -1,47 +1,18 @@
 return {
     "folke/which-key.nvim",
-    init = function()
-        local whichkey = require("which-key")
-
-        vim.o.timeout = true
-        vim.o.timeoutlen = 0
-
-        local opts = {
-            mode = "n",     -- Normal mode
-            prefix = "<leader>",
-            buffer = nil,   -- Global mappings. Specify a buffer number for buffer local mappings
-            silent = true,  -- use `silent` when creating keymaps
-            noremap = true, -- use `noremap` when creating keymaps
-            nowait = false, -- use `nowait` when creating keymaps
-        }
-
-        local mappings = {
-            L = {
-                name = "LeetCode",
-            },
-            l = {
-                name = "LSP",
-            },
-            s = {
-                name = "Search",
-            },
-            z = {
-                name = "Zen",
-            },
-            c = {
-                name = "Configure",
-            },
-            d = {
-                name = "Debug",
-            },
-        }
-
-        whichkey.register(mappings, opts)
-    end,
+    event = "VeryLazy",
     opts = {
-        window = {
-            position = "bottom"
-        }
+        icons = {
+            mappings = false,
+        },
+        delay = 0,
+        spec = {
+            { "<leader>L", group = "LeetCode",  nowait = false, remap = false },
+            { "<leader>c", group = "Configure", nowait = false, remap = false },
+            { "<leader>d", group = "Debug",     nowait = false, remap = false },
+            { "<leader>l", group = "LSP",       nowait = false, remap = false },
+            { "<leader>s", group = "Search",    nowait = false, remap = false },
+            { "<leader>z", group = "Zen",       nowait = false, remap = false },
+       }
     }
-
 }
