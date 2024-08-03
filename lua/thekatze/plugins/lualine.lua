@@ -1,10 +1,9 @@
 return {
-    {
-        "nvim-lualine/lualine.nvim",
-        opts = {
-            options = {
-                icons_enabled = false
-            }
+    "nvim-lualine/lualine.nvim",
+    event = "VeryLazy",
+    opts = {
+        options = {
+            icons_enabled = false
         }
     }
 }

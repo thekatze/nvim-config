@@ -39,7 +39,7 @@ return {
             event = "LspAttach",
         },
     },
-    init = function()
+    config = function()
         local lsp = require("lsp-zero")
 
         lsp.on_attach(function(client, bufnr)
