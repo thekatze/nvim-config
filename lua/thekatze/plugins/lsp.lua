@@ -95,6 +95,8 @@ return {
             },
         }
 
+        lspconfig.clangd.setup {}
+
         local cmp = require("cmp")
         local cmp_select_opts = { behavior = cmp.SelectBehavior.Select }
 
