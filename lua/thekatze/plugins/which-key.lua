@@ -7,7 +7,6 @@ return {
         },
         delay = 0,
         spec = {
-            { "<leader>L", group = "LeetCode",  nowait = false, remap = false },
             { "<leader>c", group = "Configure", nowait = false, remap = false },
             { "<leader>d", group = "Debug",     nowait = false, remap = false },
             { "<leader>l", group = "LSP",       nowait = false, remap = false },
