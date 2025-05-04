@@ -88,7 +88,8 @@ return {
             -- Server-specific settings. See `:help lspconfig-setup`
             settings = {
                 ['rust-analyzer'] = {
-                    checkOnSave = {
+                    checkOnSave = true,
+                    check = {
                         command = "clippy"
                     },
                 },
