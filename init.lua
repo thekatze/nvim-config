@@ -40,7 +40,7 @@ vim.opt.scrolloff = 8
 -- Don't have `o` add a comment
 vim.opt.formatoptions:remove "o"
 
-vim.o.winborder = "solid"
+vim.opt.winborder = "solid"
 
 -- highlight on yank
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
@@ -132,7 +132,13 @@ vim.pack.add({
 
     -- vim.ui.select is awful by default
     -- this is a deprecated plugin but im not really big on snacks.nvim (the proposed alternative)
-    { src = "https://github.com/stevearc/dressing.nvim" }
+    { src = "https://github.com/stevearc/dressing.nvim" },
+
+    -- completion kinda sucks out of the box, so use blink to make it better
+    {
+        src = "https://github.com/saghen/blink.cmp",
+        version = vim.version.range("1.*")
+    },
 })
 
 vim.cmd.colorscheme("oxocarbon")
@@ -156,6 +162,31 @@ vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
 
 require("todo-comments").setup()
 
+require("blink.cmp").setup({
+    keymap = {
+        preset = "default",
+        ["<C-h>"] = { "select_and_accept", "fallback" },
+        ["<C-n>"] = { "select_next", "show", "fallback" },
+    },
+    appearance = {
+        nerd_font_variant = "mono"
+    },
+    completion = {
+        documentation = {
+            auto_show = true
+        },
+        ghost_text = {
+            enabled = true
+        }
+    },
+    sources = {
+        default = { "lsp", "path", "snippets", "buffer" }
+    },
+    fuzzy = {
+        implementation = "prefer_rust_with_warning"
+    }
+})
+
 --
 -- LSP
 --
@@ -175,17 +206,3 @@ vim.keymap.set("n", "<leader>s", builtin.lsp_workspace_symbols, { desc = "Symbol
 vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, { desc = "Rename" })
 vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { desc = "Format" })
 vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code action" })
-
--- <C-y> is NOT comfy for accepting completions
-vim.keymap.set("i", "<C-h>", "<C-y>", { desc = "Accept completion" })
-
-vim.api.nvim_create_autocmd('LspAttach', {
-    callback = function(ev)
-        local client = vim.lsp.get_client_by_id(ev.data.client_id)
-        if client:supports_method('textDocument/completion') then
-            vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
-        end
-    end,
-})
-
-vim.cmd("set completeopt+=noselect")
