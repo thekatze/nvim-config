@@ -106,9 +106,6 @@ vim.pack.add({
     -- file exploring
     { src = "https://github.com/stevearc/oil.nvim" },
 
-    -- dependency for a lot of lua plugins (telescope, todo-comments)
-    { src = "https://github.com/nvim-lua/plenary.nvim" },
-
     -- searching everything
     {
         src = "https://github.com/nvim-telescope/telescope.nvim",
@@ -124,15 +121,13 @@ vim.pack.add({
     -- automatically close/edit html tags using treesitter
     { src = "https://github.com/windwp/nvim-ts-autotag" },
 
-    -- todo comment usefulness
+    -- vim.ui.select / vim.ui.input is awful by default
+    -- this adds nice ui tweaks and a solid picker
+    { src = "https://github.com/folke/snacks.nvim" },
     { src = "https://github.com/folke/todo-comments.nvim" },
 
-    -- undotree <3
-    { src = "https://github.com/mbbill/undotree" },
-
-    -- vim.ui.select is awful by default
-    -- this is a deprecated plugin but im not really big on snacks.nvim (the proposed alternative)
-    { src = "https://github.com/stevearc/dressing.nvim" },
+    -- undotree <3, but a modern version
+    { src = "https://github.com/XXiaoA/atone.nvim" },
 
     -- completion kinda sucks out of the box, so use blink to make it better
     {
@@ -144,23 +139,13 @@ vim.pack.add({
 vim.cmd.colorscheme("oxocarbon")
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 
-require("telescope").setup()
-
-local builtin = require("telescope.builtin")
-
-vim.keymap.set("n", "<leader>f", builtin.find_files, { desc = "Files" })
-vim.keymap.set("n", "<leader>h", builtin.help_tags, { desc = "Help" })
-vim.keymap.set("n", "<leader>t", builtin.live_grep, { desc = "Text" })
-vim.keymap.set("n", "<leader>d", builtin.diagnostics, { desc = "Diagnostics" })
-
 require("oil").setup({})
 vim.keymap.set("n", "<leader>e", "<cmd>Oil<CR>", { desc = "Explore" })
 
 require("nvim-treesitter.configs").setup({ highlight = { enable = true } })
 
-vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
-
-require("todo-comments").setup()
+require("atone").setup({ ui = { compact = true } })
+vim.keymap.set('n', '<leader>u', "<cmd>Atone toggle<CR>")
 
 require("blink.cmp").setup({
     keymap = {
@@ -187,6 +172,21 @@ require("blink.cmp").setup({
     }
 })
 
+require("snacks").setup({
+    input = { enabled = true },
+    picker = { enabled = true },
+    notifier = { enabled = true },
+})
+
+vim.keymap.set("n", "<leader>f", function() Snacks.picker.smart() end, { desc = "Files" })
+vim.keymap.set("n", "<leader>h", function() Snacks.picker.help() end, { desc = "Help" })
+vim.keymap.set("n", "<leader>t", function() Snacks.picker.grep() end, { desc = "Text" })
+vim.keymap.set("n", "<leader>d", function() Snacks.picker.diagnostics() end, { desc = "Diagnostics" })
+
+
+require("todo-comments").setup({})
+vim.keymap.set("n", "<leader>c", function() Snacks.picker.todo_comments() end, { desc = "Todo comments" })
+
 --
 -- LSP
 --
@@ -197,11 +197,11 @@ vim.keymap.set('n', '<leader>lf', vim.lsp.buf.format)
 
 vim.keymap.set('n', 'gs', vim.diagnostic.open_float)
 
-vim.keymap.set("n", "gd", builtin.lsp_definitions, { desc = "Definitions" })
+vim.keymap.set("n", "gd", function() Snacks.picker.lsp_definitions() end, { desc = "Definitions" })
 
-vim.keymap.set("n", "grr", builtin.lsp_references, { desc = "References" })
-vim.keymap.set("n", "gri", builtin.lsp_implementations, { desc = "Implementations" })
-vim.keymap.set("n", "<leader>s", builtin.lsp_workspace_symbols, { desc = "Symbols" })
+vim.keymap.set("n", "grr", function() Snacks.picker.lsp_references() end, { desc = "References" })
+vim.keymap.set("n", "gri", function() Snacks.picker.lsp_implementations() end, { desc = "Implementations" })
+vim.keymap.set("n", "<leader>s", function() Snacks.picker.lsp_workspace_symbols() end, { desc = "Symbols" })
 
 vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, { desc = "Rename" })
 vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { desc = "Format" })
