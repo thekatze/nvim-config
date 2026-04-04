@@ -110,17 +110,11 @@ vim.pack.add({
     -- file exploring
     { src = "https://github.com/stevearc/oil.nvim" },
 
-    -- searching everything
-    {
-        src = "https://github.com/nvim-telescope/telescope.nvim",
-        version = vim.version.range("0.1.8")
-    },
-
     -- nice syntax highlighting
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
-
-    -- sticky function headers
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter-context" },
+    {
+        src = "https://github.com/nvim-treesitter/nvim-treesitter",
+        version = "main"
+    },
 
     -- automatically close/edit html tags using treesitter
     { src = "https://github.com/windwp/nvim-ts-autotag" },
@@ -129,9 +123,6 @@ vim.pack.add({
     -- this adds nice ui tweaks and a solid picker
     { src = "https://github.com/folke/snacks.nvim" },
     { src = "https://github.com/folke/todo-comments.nvim" },
-
-    -- undotree <3, but a modern version
-    { src = "https://github.com/XXiaoA/atone.nvim" },
 
     -- completion kinda sucks out of the box, so use blink to make it better
     {
@@ -146,10 +137,15 @@ vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 require("oil").setup({})
 vim.keymap.set("n", "<leader>e", "<cmd>Oil<CR>", { desc = "Explore" })
 
-require("nvim-treesitter.configs").setup({ highlight = { enable = true } })
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = '*',
+  callback = function(ev)
+      pcall(vim.treesitter.start, ev.buf)
+  end,
+})
 
-require("atone").setup({ ui = { compact = true } })
-vim.keymap.set('n', '<leader>u', "<cmd>Atone toggle<CR>")
+vim.cmd("packadd nvim.undotree")
+vim.keymap.set('n', '<leader>u', require("undotree").open)
 
 require("blink.cmp").setup({
     keymap = {
@@ -195,7 +191,7 @@ vim.keymap.set("n", "<leader>c", function() Snacks.picker.todo_comments() end, {
 -- LSP
 --
 
-vim.lsp.enable({ "lua_ls", "rust_analyzer" })
+vim.lsp.enable({ "lua_ls", "rust_analyzer", "ts_ls", "harper_ls" })
 
 vim.keymap.set('n', '<leader>lf', vim.lsp.buf.format)
 
@@ -211,49 +207,3 @@ vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, { desc = "Rename" })
 vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { desc = "Format" })
 vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code action" })
 
--- LSP progress in snacks notification: very useful for rust_analyzer because it takes ages to scan the project
-
----@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
-local progress = vim.defaulttable()
-vim.api.nvim_create_autocmd("LspProgress", {
-    ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
-    callback = function(ev)
-        local client = vim.lsp.get_client_by_id(ev.data.client_id)
-        local value = ev.data.params
-            .value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
-        if not client or type(value) ~= "table" then
-            return
-        end
-        local p = progress[client.id]
-
-        for i = 1, #p + 1 do
-            if i == #p + 1 or p[i].token == ev.data.params.token then
-                p[i] = {
-                    token = ev.data.params.token,
-                    msg = ("[%3d%%] %s%s"):format(
-                        value.kind == "end" and 100 or value.percentage or 100,
-                        value.title or "",
-                        value.message and (" **%s**"):format(value.message) or ""
-                    ),
-                    done = value.kind == "end",
-                }
-                break
-            end
-        end
-
-        local msg = {} ---@type string[]
-        progress[client.id] = vim.tbl_filter(function(v)
-            return table.insert(msg, v.msg) or not v.done
-        end, p)
-
-        local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
-        vim.notify(table.concat(msg, "\n"), "info", {
-            id = "lsp_progress",
-            title = client.name,
-            opts = function(notif)
-                notif.icon = #progress[client.id] == 0 and " "
-                    or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
-            end,
-        })
-    end,
-})
