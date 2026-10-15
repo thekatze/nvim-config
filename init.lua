@@ -44,13 +44,17 @@ vim.opt.winborder = "solid"
 
 -- highlight on yank
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
-vim.api.nvim_create_autocmd("TextYankPost", {
-    callback = function()
-        vim.highlight.on_yank()
-    end,
+vim.api.nvim_create_autocmd({ "TextYankPost", "TextPutPost" }, {
     group = highlight_group,
-    pattern = "*",
+    callback = function()
+        vim.hl.hl_op()
+    end,
 })
+
+vim.keymap.set('n', '<C-[>', function()
+    local mc_ns = vim.api.nvim_create_namespace('nvim.multicursor')
+    vim.api.nvim_buf_clear_namespace(0, mc_ns, 0, -1)
+end)
 
 --
 -- Keybinds
@@ -69,8 +73,8 @@ vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Focus top window" })
 vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Focus bottom window" })
 
 -- sensible vertical movement when text is wrapped
-vim.keymap.set({"n", "v"}, "j", "gj")
-vim.keymap.set({"n", "v"}, "k", "gk")
+vim.keymap.set({ "n", "v" }, "j", "gj")
+vim.keymap.set({ "n", "v" }, "k", "gk")
 
 -- visual mode move selection
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
@@ -138,10 +142,10 @@ require("oil").setup({})
 vim.keymap.set("n", "<leader>e", "<cmd>Oil<CR>", { desc = "Explore" })
 
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = '*',
-  callback = function(ev)
-      pcall(vim.treesitter.start, ev.buf)
-  end,
+    pattern = '*',
+    callback = function(ev)
+        pcall(vim.treesitter.start, ev.buf)
+    end,
 })
 
 vim.cmd("packadd nvim.undotree")
@@ -191,7 +195,17 @@ vim.keymap.set("n", "<leader>c", function() Snacks.picker.todo_comments() end, {
 -- LSP
 --
 
-vim.lsp.enable({ "lua_ls", "rust_analyzer", "ts_ls", "harper_ls" })
+vim.lsp.config("rust_analyzer", {
+    settings = {
+        ["rust-analyzer"] = {
+            check = {
+                command = "clippy",
+            },
+        },
+    },
+})
+
+vim.lsp.enable({ "lua_ls", "rust_analyzer", "ts_ls", "harper_ls", "clangd", "tinymist", "astro" })
 
 vim.keymap.set('n', '<leader>lf', vim.lsp.buf.format)
 
@@ -206,4 +220,3 @@ vim.keymap.set("n", "<leader>s", function() Snacks.picker.lsp_workspace_symbols(
 vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, { desc = "Rename" })
 vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { desc = "Format" })
 vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code action" })
-
