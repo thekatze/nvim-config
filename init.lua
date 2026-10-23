@@ -224,7 +224,7 @@ vim.lsp.config("rust_analyzer", {
     },
 })
 
-vim.lsp.enable({ "lua_ls", "rust_analyzer", "ts_ls", "harper_ls", "clangd", "tinymist", "astro" })
+vim.lsp.enable({ "lua_ls", "rust_analyzer", "ts_ls", "harper_ls", "clangd", "tinymist", "astro", "oxlint" })
 
 vim.keymap.set('n', '<leader>lf', vim.lsp.buf.format)
 
