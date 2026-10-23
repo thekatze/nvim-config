@@ -116,6 +116,9 @@ vim.pack.add({
     -- file exploring
     { src = "https://github.com/stevearc/oil.nvim" },
 
+    -- useful git integration
+    { src = "https://github.com/lewis6991/gitsigns.nvim" },
+
     -- nice syntax highlighting
     {
         src = "https://github.com/nvim-treesitter/nvim-treesitter",
@@ -149,6 +152,20 @@ vim.api.nvim_create_autocmd('FileType', {
         pcall(vim.treesitter.start, ev.buf)
     end,
 })
+
+require('gitsigns').setup {
+    current_line_blame_opts = {
+        virt_text_pos = 'right_align',
+        delay = 0,
+    },
+    current_line_blame_formatter = '<author>, <author_time:%R> - <summary>',
+    on_attach = function(bufnr)
+        local gitsigns = require('gitsigns')
+
+        vim.keymap.set('n', '<leader>r', function() gitsigns.setqflist('all') end, { buffer = bufnr, desc = "Review git changes" })
+        vim.keymap.set('n', '<leader>b', gitsigns.toggle_current_line_blame, { buffer = bufnr, desc = "Git Blame" })
+    end
+}
 
 vim.cmd("packadd nvim.undotree")
 vim.keymap.set('n', '<leader>u', require("undotree").open)
